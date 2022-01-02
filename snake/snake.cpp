@@ -1,8 +1,17 @@
 #include <iostream>
-#include <windows.h>
-#include <cstdlib>
-#include <conio.h>
 using namespace std;
+
+/*
+ * Import library
+ */
+#include <vector>
+#include <windows.h>
+#include <conio.h>
+#include <cstring>
+#include <time.h>
+#include <random>
+#include <cstdlib>
+
 void gotoxy( int column, int line );
 struct Point{
     int x,y;
