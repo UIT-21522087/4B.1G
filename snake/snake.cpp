@@ -126,4 +126,4 @@ void genApple()
 	gotoxy(x, y);
 	cout << APPLE;
 }
-
+// Thanh
