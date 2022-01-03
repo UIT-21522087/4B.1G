@@ -10,70 +10,79 @@ using namespace std;
 #include <cstring>
 #include <time.h>
 #include <random>
-#include <cstdlib>
 
-void gotoxy( int column, int line );
-struct Point{
-    int x,y;
-};
-class CONRAN{
-public:
-    struct Point A[100];
-    int DoDai;
-    CONRAN(){
-        DoDai = 3;
-        A[0].x = 10; A[0].y = 10;
-        A[1].x = 11; A[1].y = 10;
-        A[2].x = 12; A[2].y = 10;
-    }
-    void Ve(){
-        for (int i = 0; i < DoDai; i++){
-            gotoxy(A[i].x,A[i].y);
-            cout<<"X";
-        }
-    }
-    void DiChuyen(int Huong){
-        for (int i = DoDai-1; i>0;i--)
-            A[i] = A[i-1];
-        if (Huong==0) A[0].x = A[0].x + 1;
-        if (Huong==1) A[0].y = A[0].y + 1;
-        if (Huong==2) A[0].x = A[0].x - 1;
-        if (Huong==3) A[0].y = A[0].y - 1;
+/*
+ * MACRO
+ */
+#define WIDTH 40
+#define HEIGHT 20
+#define BODY '*'
+#define APPLE 'O'
 
-    }
+/*
+ * Enum
+ */
+enum class Direction
+{
+	up,
+	right,
+	down,
+	left
 };
 
+// Each point is a part of the snake
+struct Point
+{
+	int x;
+	int y;
+};
+
+
+#pragma region GlobalVariable
+// Create snake
+vector<Point> snake = {
+	Point{ WIDTH / 2 + 2, HEIGHT / 2 },
+	Point{ WIDTH / 2 + 1, HEIGHT / 2 },
+	Point{ WIDTH / 2, HEIGHT / 2 },
+	Point{ WIDTH / 2 - 1, HEIGHT / 2 },
+	Point{ WIDTH / 2 - 2, HEIGHT / 2 }
+};
+Direction direction = Direction::right;
+Point apple;
+int score = 0;
+int speed = 300;
+Point prevTail;
+#pragma endregion
+
+
+#pragma region Prototype
+void drawSnakePart(Point);
+void drawSnake();
+void gotoxy(int, int);
+void ShowConsoleCursor(bool);
+void move();
+void drawBox();
+bool isHitWall();
+bool isBiteItself();
+void drawHeadnTail();
+void genApple();
+bool isAteApple();
+void growing();
+void displayScore();
+void showEndMenu();
+void startGame();
+void resetSnake();
+void showStartMenu();
+#pragma endregion
+
+
+
+/*
+ * Let's the game start
+ */
 int main()
 {
-    CONRAN r;
-    int Huong = 0;
-    char t;
-
-    while (1){
-        if (kbhit()){
-            t = getch();
-            if (t=='a') Huong = 2;
-            if (t=='w') Huong = 3;
-            if (t=='d') Huong = 0;
-            if (t=='x') Huong = 1;
-        }
-        system("cls");
-        r.Ve();
-        r.DiChuyen(Huong);
-        Sleep(300);
-    }
-
-    return 0;
+	showStartMenu();
+	return 0;
 }
 
-
-void gotoxy( int column, int line )
-  {
-  COORD coord;
-  coord.X = column;
-  coord.Y = line;
-  SetConsoleCursorPosition(
-    GetStdHandle( STD_OUTPUT_HANDLE ),
-    coord
-    );
-  }
