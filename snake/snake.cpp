@@ -85,5 +85,50 @@ int main()
 	showStartMenu();
 	return 0;
 }
-//hello
-//12345
+#pragma region GameFunction
+// Draw snakeboard with WIDTH and HEIGHT was set
+void drawBox()
+{
+	for (size_t i = 0; i < WIDTH; i++)
+		cout << '=';
+	gotoxy(0, HEIGHT);
+	for (size_t i = 0; i < WIDTH; i++)
+		cout << '=';
+	for (size_t i = 1; i < HEIGHT; i++)
+	{
+		gotoxy(0, i);
+		cout << '|';
+	}
+	for (size_t i = 1; i < HEIGHT; i++)
+	{
+		gotoxy(WIDTH, i);
+		cout << '|';
+	}
+}
+
+// Check if the snake hit the wall
+bool isHitWall()
+{
+	return snake[0].x == 0 || snake[0].y == 0 || snake[0].x == WIDTH || snake[0].y == HEIGHT;
+}
+
+// Generate apple on the board
+void genApple()
+{
+	srand(time(0));
+	int x = rand() % (WIDTH - 1) + 1;
+	int y = rand() % (HEIGHT - 1) + 1;
+	apple = {
+		x,
+		y,
+	};
+	gotoxy(x, y);
+	cout << APPLE;
+}
+
+// Check if the snake ate apple
+bool isAteApple()
+{
+	return snake[0].x == apple.x && snake[0].y == apple.y;
+}
+
