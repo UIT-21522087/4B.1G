@@ -265,3 +265,59 @@ void showStartMenu()
 		exit(1);
 }
 #pragma endregion
+#pragma region SnakeFunction
+// Draw a part of snake
+void drawSnakePart(Point p)
+{
+	gotoxy(p.x, p.y);
+	cout << BODY;
+}
+
+// Draw whole snake
+void drawSnake()
+{
+	for (size_t i = 0; i < snake.size(); i++)
+		drawSnakePart(snake[i]);
+}
+
+// move the snake
+void move()
+{
+	prevTail = snake.back();
+	for (size_t i = snake.size() - 1; i > 0; i--)
+		snake[i] = snake[i - 1];
+	if (direction == Direction::up)
+		snake[0].y -= 1;
+	else if (direction == Direction::down)
+		snake[0].y += 1;
+	else if (direction == Direction::left)
+		snake[0].x -= 1;
+	else if (direction == Direction::right)
+		snake[0].x += 1;
+}
+
+// Redraw head & tail to make the snake move
+void drawHeadnTail()
+{
+	gotoxy(snake[0].x, snake[0].y);
+	cout << BODY;
+	gotoxy(prevTail.x, prevTail.y);
+	cout << ' '; // Clear the old tail
+}
+
+// Check if snake bite itself
+bool isBiteItself()
+{
+	Point head = snake[0];
+	for (size_t i = 1; i < snake.size(); i++)
+		if (head.x == snake[i].x && head.y == snake[i].y)
+			return true;
+	return false;
+}
+
+// Growing snake when it ate an apple
+void growing()
+{
+	snake.push_back(prevTail);
+}
+#pragma endregion
